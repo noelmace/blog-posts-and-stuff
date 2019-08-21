@@ -1,3 +1,3 @@
-# Noël Macé - Blog posts & stuff
+# Blog posts & stuff
 
-own blog posts drafts &amp; archive
+Drafts and archives I made public for reviews and teamwork.
