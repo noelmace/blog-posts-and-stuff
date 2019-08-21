@@ -382,7 +382,7 @@ describe('<my-component>', () => {
     beforeEach(() => {
       el = fixture('<my-component foo="bar"><my-component');
     });
-    if('is cool', () => {
+    it('is cool', () => {
       expect(el).to.be.cool;
     });
     describe('When: attribute foo is set to a new string', () => {
