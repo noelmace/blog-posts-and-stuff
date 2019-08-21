@@ -1,0 +1,32 @@
+st=>start: So, you wanna write shared behaviors
+really=>condition: Really?
+You'll need those?
+drop=>end: drop it
+reuse=>condition: in different
+test suites/files
+closure=>end: closure
+Just use the power of closures:>https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/closure[blank]
+output=>condition: in the same
+order w/ the same
+descriptions
+sure=>condition: are you sure?
+one=>end: one-by-one
+define a lambda for each test:>https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/one-by-one[blank]
+noprecondition=>condition: with always the same
+pre & post conditions
+bigLambda=>end: all-in-one
+define them in a big lambda:>https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/all-in-one[blank]
+mochaContext=>end: mocha-way
+you need to use Mocha "contexts":>https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/mocha-way[blank]
+
+st->really
+really(yes, bottom)->reuse
+really(no, right)->drop
+reuse(no, bottom)->closure
+reuse(yes)->output
+output(no, bottom)->one
+output(yes)->sure
+sure(yes)->noprecondition
+sure(no)->really
+noprecondition(yes, bottom)->bigLambda
+noprecondition(no)->mochaContext
