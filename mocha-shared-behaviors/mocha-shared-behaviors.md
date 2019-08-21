@@ -220,30 +220,33 @@ Here, a first solution is to move the `beforeEach` in `shouldBehaveLikeAUser`.
 
 ```javascript
 /// helpers.js
-export function shouldBehaveLikeAUser(constructor) {
+export function shouldBehaveLikeAUser(buildUserFn, { firstName, lastName }) {
   let userLike;
-  const firstName = 'tobi';
-  const lastName = 'holowachuk';
 
-  context(`when using new ${constructor.name}(${firstName}, ${lastName})`, () => {
-    beforeEach(() => {
-      userLike = new constructor(firstName, lastName);
-    });
-    it('should have .name.first', () => {
-      expect(userLike.name.first).to.equal(firstName);
-    });
-    // other tests
+  beforeEach(() => {
+    userLike = buildUserFn();
   });
-}
+  
+  it('should have .name.first', () => {
+    expect(userLike.name.first).to.equal(firstName);
+  });
+  // other tests
+};
 
 /// user.test.js
 describe('User', () => {
-  shouldBehaveLikeAUser(User);
+  shouldBehaveLikeAUser(() => new User("tobi", "holowaychuk"), {
+    firstName: "tobi",
+    lastName: "holowaychuk"
+  });
 });
 
 /// admin.test.js
 describe('Admin', () => {
-  shouldBehaveLikeAUser(Admin);
+  shouldBehaveLikeAUser(() => new Admin("tobi", "holowaychuk"), {
+    firstName: "tobi",
+    lastName: "holowaychuk"
+  });
 });
 ```
 
