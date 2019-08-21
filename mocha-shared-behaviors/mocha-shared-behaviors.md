@@ -220,7 +220,7 @@ Here, a first solution is to move the `beforeEach` in `shouldBehaveLikeAUser`.
 
 ```javascript
 /// helpers.js
-export function shouldBehaveLikeAUser(buildUserFn, { firstName, lastName }) {
+export function shouldBehaveLikeAUser(buildUserFn, { firstName, lastName, fullname }) {
   let userLike;
 
   beforeEach(() => {
@@ -237,7 +237,8 @@ export function shouldBehaveLikeAUser(buildUserFn, { firstName, lastName }) {
 describe('User', () => {
   shouldBehaveLikeAUser(() => new User("tobi", "holowaychuk"), {
     firstName: "tobi",
-    lastName: "holowaychuk"
+    lastName: "holowaychuk",
+    fullname: 'tobi holowaychuk'
   });
 });
 
@@ -245,7 +246,8 @@ describe('User', () => {
 describe('Admin', () => {
   shouldBehaveLikeAUser(() => new Admin("tobi", "holowaychuk"), {
     firstName: "tobi",
-    lastName: "holowaychuk"
+    lastName: "holowaychuk",
+    fullname: 'tobi holowaychuk'
   });
 });
 ```
