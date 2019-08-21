@@ -1,0 +1,16 @@
+{
+  "name": "nmc-blog-posts",
+  "version": "1.0.0",
+  "description": "blog posts drafts and archives ",
+  "private": true,
+  "scripts": {
+    "diagrams": "diagrams build && convert-svg-to-png --background white ./**/*.svg",
+    "diagrams:watch": "diagrams watch"
+  },
+  "author": "Noël Macé",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "convert-svg-to-png": "^0.5.0",
+    "diagrams": "^0.10.0"
+  }
+}
