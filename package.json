@@ -5,12 +5,14 @@
   "private": true,
   "scripts": {
     "diagrams": "diagrams build && convert-svg-to-png --background white ./**/*.svg",
-    "diagrams:watch": "diagrams watch"
+    "diagrams:watch": "diagrams watch",
+    "medium": "mkdir $npm_config_name && echo $npm_config_from > $npm_config_name/import.txt && mediumexporter $npm_config_from > $npm_config_name/$npm_config_name.md"
   },
   "author": "Noël Macé",
   "license": "UNLICENSED",
   "devDependencies": {
     "convert-svg-to-png": "^0.5.0",
-    "diagrams": "^0.10.0"
+    "diagrams": "^0.10.0",
+    "mediumexporter": "^0.1.6"
   }
 }
