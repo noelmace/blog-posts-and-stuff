@@ -172,11 +172,9 @@ But it can also bring a lot of unneeded complexity to your tests.
 **Avoid using the Mocha context as much as you can!**
 _Same thing for shared behaviors in general!_
 
-## from complexity to simplicity
-
 Let's deconstruct the previous example, and minimize its complexity step-by-step.
 
-### integrated setup or tear down
+## integrated setup or tear down
 
 Back to the ["functional"
 interface](https://github.com/mochajs/mocha/pull/3399) PR. Why would we need a "functional" interface in Mocha in the first place?
@@ -215,6 +213,8 @@ TypeError: Cannot read property 'name' of undefined
 This is because Mocha identifies and "records" your test suite first, and _then_ runs your callbacks. So here, it runs
 `beforeEach` and `shouldBehaveLikeAUser` (`user` being undefined at this point) and only _then_ `beforeEach.fn` and `it.fn`.
 
+## "All-in-one"
+
 One solution is to move the `beforeEach` in `shouldBehaveLikeAUser`.
 
 ```javascript
@@ -251,27 +251,25 @@ describe('Admin', () => {
 });
 ```
 
-**Pros :thumbsup::**
+Here, nothing is "hidden." Just by looking at the signature, we understand that `shouldBehaveLikeAUser` will test that the constructor you gave will fit the "User" behavior definition. This can be enhanced by adding a JSDoc @param or some TypeScript.
 
-- It permits definition of your shared behavior in a separate file.
-- :heavy_plus_sign: Nothing is "hidden." Just by looking at the signature, we understand that `shouldBehaveLikeAUser` will test that the constructor you gave will fit the "User" behavior definition. (This can be enhanced by adding a JSDoc @param or some TypeScript.)
-- :heavy_plus_sign: It's self-sufficient. No side effects or closure requirements here.
+And it's self-sufficient. No side effects or closure requirements here.
 
-**Cons :thumbsdown::**
+**But**, it has its own logic. For example, if you add the first argument to the `Admin` constructor, it fails, because you introduced a bug in the shared behavior, and there is a chance you won't see it directly because you didn't define a spec for that.
 
-- It has its own logic. For example, if you add the first argument to the `Admin` constructor, it fails, because you introduced a bug in the shared behavior, and there is a chance you won't see it directly because you didn't define a spec for that.
-- :heavy_minus_sign: It's isolated. You can't reuse `userLike`, and have to repeat yourself.
-  ```javascript
-  it('should be an .admin', () => {
-    expect(new Admin().admin).to.be.true;
-  });
-  ```
+And it's completely isolated! You can't reuse `userLike`, and have to repeat yourself.
+
+```javascript
+it('should be an .admin', () => {
+  expect(new Admin().admin).to.be.true;
+});
+```
 
 **Conclusion**
 
 You should use this solution if, and only if, you absolutely need specific setup or tear down which are completely isolated from the other behaviors, and if the required parameters aren't too complex.
 
-### split behaviors
+## "one-by-one"
 
 One way to solve the issues the previous method raise is by defining the shared behaviors one by one, spec by spec, like this:
 
@@ -309,19 +307,9 @@ describe('User', () => {
 });
 ```
 
-**Pros :thumbsup::**
+Now, this shared behavior isn't isolated anymore. And it's simple :kiss:!
 
-- Nothing is "hidden." It's even better than the previous example, as we can follow the Mocha `expect` syntax (if you're into this 😉).
-- It's self-sufficient. No side effects or closure requirements here.
-- :heavy_plus_sign: It isn't isolated.
-- :heavy_plus_sign: It's simple 💋. (Added logic is minimal.)
-
-**Cons :thumbsdown::**
-
-- You can only provide one test at a time.
-- It doesn't require testing every aspect of the behavior.
-- It doesn't define any order.
-- You have to rewrite every spec description, setup and tear down every time.
+Not being able to require that every aspect of the behavior is tested, to define any order, nor spec description, setup and tear down could be an important downside for some use cases. Yet, in my opinion, this isn't really needed as often as you may think.
 
 **Conclusion**
 
@@ -331,7 +319,9 @@ Yet, I only use it if separate files is an absolute requirement.
 
 ### The power of closures
 
-If it isn't, simply use the lambda closure to share data between your shared behaviors. Take the first example, from the Mocha Wiki. `user.test.js` and `admin.test.js` are actually in a single file, `test.js`. `User` and `Admin` are from the same "feature scope," so it feels right and logical to test those two as one.
+If it isn't, simply use the lambda closure to share data between your shared behaviors.
+
+Take the first example, from the Mocha Wiki. `user.test.js` and `admin.test.js` are actually in a single file, `test.js`. `User` and `Admin` are from the same "feature scope," so it feels right and logical to test those two as one.
 
 With this idea, let's refactor a little.
 
@@ -372,20 +362,22 @@ describe('Admin', () => {
 });
 ```
 
-#### my 2 cents about this
+#### my 2 cents about this method
 
-Most of the time, I write my tests in a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) style. When using Mocha, it results in something like this:
+Most of the time, I write my tests in a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) style. This is more a way to think you test than a way to write them! Here is an example to help you better understand what I'm talking about anyway.
+
+> **FYI** Here, I only "replaced" `it` and `context` by `then.it`, `given` & `when` in order to make it more simple to understand.
+> ```javascript
+> const given = when = context;
+> const then = { it };
+> ```
+> I DO NOT advise you to do this in your project!
 
 ```javascript
-// Here, I only "replaced" `it` and `context` by `then.it`, `given` & `when` in order to make it more simple to understand.
-// I **do not** advise you to do this in your project! This is more a way to think you test than a way to write them!
-const given = when = context;
-const then = { it };
-
 context('<my-component>', () => {
   const el;
 
-  then.elIsCoolAndGreat = () => {
+  then.elShouldBeCoolAndGreat = () => {
     then.it('is cool', () => {
       expect(el).to.be.cool;
     });
@@ -400,14 +392,14 @@ context('<my-component>', () => {
       el = fixture('<my-component foo="bar"><my-component');
     });
 
-    then.elIsCoolAndGreat();
+    then.elShouldBeCoolAndGreat();
 
     when('attribute foo is set to a new string', () => {
       beforeEach(() => {
         el.setAttribute('foo', 'baz');
       });
 
-      then.elIsCoolAndGreat();
+      then.elShouldBeCoolAndGreat();
     });
     describe('When: attribute foo is set to an empty string', () => {
       // etc...
@@ -420,39 +412,51 @@ With this approach, it is easier to see that you often need to test the same beh
 
 Yet, remember that repeating yourself could also be OK! You could also write your own Chai extension. It only depends on your preferences and what you're testing.
 
-Now, it's time to summarize all this. Let's define some opinionated "Best Practices".
+Now, it's time to summarize all this.
 
-## Best Practices
+## Requirements, Pros & Cons
 
-**DO** Use arrow functions by default. It makes it clear that the Mocha contexts shouldn't be used in your project (probably most of the time!)
+|    | Mocha `this` | all-in-one | one-by-one | closures only |
+| -- | -------------| ---------- | ---------- | ------------- |
+| :thumbsup: KISS :kiss: | :x: | :x: | :heavy_check_mark: | :white_check_mark: |
+| :thumbsup: No side effects or closure | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: |
+| :thumbsup: no hidden nor added logic | :x: | :x: | :white_check_mark: | :white_check_mark: |
+| several tests at once | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| can be exported | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: |
 
-**DO** Check if YAGNI before anything, every time!
+> :white_check_mark: = most of the time
 
-**DON'T** Write shared behaviors without thinking about it carefully. You probably don't need to write a shared behavior as often as you may think!
+## Guidelines
 
-**DON'T** use the Mocha "contexts" if at least one of the following _**IF**_ is met
+:heavy_check_mark: **DO** Use arrow functions by default. It makes it clear that the Mocha contexts shouldn't be used in your project (probably most of the time!)
+
+:heavy_check_mark: **DO** Check if YAGNI before anything, every time!
+
+:x: **DON'T** Write shared behaviors without thinking about it carefully. You probably don't need to write a shared behavior as often as you may think!
+
+:x: **DON'T** use the Mocha "contexts" if at least one of the following :grey_question:**IF** is met
 
 ### shared behaviors in one file
 
-**IF** you don't need to use a shared behavior in another file straight away
+:grey_question: ***IF you don't need to use a shared behavior in another file straight away***
 
-**DO** favor using closures
+:heavy_check_mark: **DO** favor using closures
 
-**DO** keep a variable declaration close to it's initialization (& use)
+:heavy_check_mark: **DO** keep a variable declaration close to it's initialization (& use)
 
 ### one-by-one
 
-**IF** you don't need to define a whole set of tests in the same order with the same description.
+:grey_question: ***IF you don't need to define a whole set of tests in the same order with the same description.***
 
-**DO** define one lambda for each test in another file
+:heavy_check_mark: **DO** define one lambda for each test in another file
 
-**DON'T** use a higher-order function to join these lambdas if there are less than 2 or 3 tests for a same "scope."
+:x: **DON'T** use a higher-order function to join these lambdas if there are less than 2 or 3 tests for a same "scope."
 
 ### all-in-one
 
-**IF** your pre- and post- conditions are always the same for this behavior
+:grey_question: ***IF your pre- and post- conditions are always the same for this behavior***
 
-**DO** define your shared behaviors with the 'before', 'beforeEach', 'after' and 'afterEach' in one big lambda function
+:heavy_check_mark: **DO** define your shared behaviors with the 'before', 'beforeEach', 'after' and 'afterEach' in one big lambda function
 
 ### how to choose
 
@@ -461,4 +465,5 @@ Last but not least, here is a flowchart to help you make the right decision ever
 ![flowchart](./charts/decision.flowchart.svg)
 
 > **Do you have other ideas for defining good shared behaviors? Any feedback or questions about the one I have shown here?**
+>
 > **Leave a comment below, tweet at me (@noel_mace #WebOnFIRE), or open an issue for the associated [project](noelmace/mocha-shared-behaviors) on Github**
