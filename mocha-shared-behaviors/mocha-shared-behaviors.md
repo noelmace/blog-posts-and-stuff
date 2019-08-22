@@ -8,15 +8,15 @@ tags: testing, mocha, open-wc, web components
 Like many of you, I love unit testing! Because good coverage on a codebase makes me confident.
 Tests help me understand what a code is about. Above all, they make me feel less frustrated when I debug :wink:
 
-But here is something that can make any developer less frustrated when they write or read tests: sharing
-behaviors.
+But here is something that can make any developer frustrated when they write or read tests: **sharing
+behaviors**.
 
 I see two reasons for this:
 
 1. sharing behaviors can often lead to over-engineering tests
 2. there are too many (bad) ways to do it
 
-So, have a nice cup of tea, relax, and let's have a look at ways to do it right...
+So, have a nice cup of tea, relax, and let's have a look at some ways to do it right...
 
 ## tl;dr
 
@@ -182,7 +182,7 @@ Back to the ["functional"
 interface](https://github.com/mochajs/mocha/pull/3399) PR. Why would we need a "functional" interface in Mocha in the first place?
 
 Let's try to rewrite the previous example using an arrow function. Of course, a lambda doesn't have a "this", so here
-I'll try to use its closure.
+I'll use its closure.
 
 ```javascript
 /// helpers.js
@@ -273,7 +273,7 @@ You should use this solution if, and only if, you absolutely need specific setup
 
 ### split behaviors
 
-One way to solve split behaviors issues is by defining the shared behaviors one by one, spec by spec, like this:
+One way to solve the issues the previous method raise is by defining the shared behaviors one by one, spec by spec, like this:
 
 ```javascript
 export const expectUserLike = user => ({
@@ -405,29 +405,45 @@ With this approach, it is easier to see that you often need to test the same beh
 
 This is where this method is handy, and why I use it very often.
 
-## Conclusion
+Now, it's time to summarize all this. Let's begin by defining some "Best Practices".
 
-Let's summarize with some best practices.
+## Best Practices
 
 **DO** Use arrow functions by default. It makes it clear that the Mocha contexts shouldn't be used in your project (probably most of the time!)
 
-**DO** Check if YAGNI before anything, every time.
+**DO** Check if YAGNI before anything, every time!
 
 **DON'T** Write shared behaviors without thinking about it carefully. You probably don't need to write a shared behavior as often as you may think!
 
-**DO** use closures if you don't need to use a shared behavior in another file straight away.
+**DON'T** use the Mocha "contexts" if at least one of the following _**IF**_ is met
 
-**DO** define a lambda for each test in another file, if you don't need to define a whole set of tests in the same order with the same description.
+### shared behaviors in one file
 
-**DON'T** use a higher-order function if there are less than 2 or 3 tests for a same "scope."
+**IF** you don't need to use a shared behavior in another file straight away
 
-**DO** define your shared behaviors with the 'before', 'beforeEach', 'after' and 'afterEach' in one big lambda function if your pre- and post- conditions are always the same for this behavior.
+**DO** favor using closures
 
-**DON'T** use the Mocha "contexts" if one of the simpler approaches is applicable.
+**DO** keep a variable declaration close to it's initialization (& use)
+
+### one-by-one
+
+**IF** you don't need to define a whole set of tests in the same order with the same description.
+
+**DO** define one lambda for each test in another file
+
+**DON'T** use a higher-order function to join these lambdas if there are less than 2 or 3 tests for a same "scope."
+
+### all-in-one
+
+**IF** your pre- and post- conditions are always the same for this behavior
+
+**DO** define your shared behaviors with the 'before', 'beforeEach', 'after' and 'afterEach' in one big lambda function
+
+### how to choose
 
 Last but not least, here is a flowchart to help you make the right decision every time:
 
 ![flowchart](./charts/decision.flowchart.svg)
 
 > **Do you have other ideas for defining good shared behaviors? Any feedback or questions about the one I have shown here?**
-> **Leave a comment below, tweet at me @noel_mace #WebOnFIRE, or open an issue on Github**
+> **Leave a comment below, tweet at me (@noel_mace #WebOnFIRE), or open an issue for the associated [project](noelmace/mocha-shared-behaviors) on Github**
