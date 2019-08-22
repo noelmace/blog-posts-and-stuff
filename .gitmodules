@@ -1,0 +1,3 @@
+[submodule "tools/mediumexporter"]
+	path = tools/mediumexporter
+	url = git@github.com:xdamman/mediumexporter.git

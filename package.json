@@ -13,6 +13,6 @@
   "devDependencies": {
     "convert-svg-to-png": "^0.5.0",
     "diagrams": "^0.10.0",
-    "mediumexporter": "^0.1.6"
+    "fs-extra": "^8.1.0"
   }
 }
