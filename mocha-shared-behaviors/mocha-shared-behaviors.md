@@ -372,27 +372,42 @@ describe('Admin', () => {
 });
 ```
 
-#### my 2 cents
+#### my 2 cents about this
 
-Most of the time, I write my tests in a Given-When-Then style. When using Mocha, it results in something like this (where the `it` defines the 'Then' parts):
+Most of the time, I write my tests in a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) style. When using Mocha, it results in something like this:
 
 ```javascript
-describe('<my-component>', () => {
+// Here, I only "replaced" `it` and `context` by `then.it`, `given` & `when` in order to make it more simple to understand.
+// I **do not** advise you to do this in your project! This is more a way to think you test than a way to write them!
+const given = when = context;
+const then = { it };
+
+context('<my-component>', () => {
   const el;
-  context('Given: attribute foo="bar"' () => {
+
+  then.elIsCoolAndGreat = () => {
+    then.it('is cool', () => {
+      expect(el).to.be.cool;
+    });
+
+    then.it(`is great`, () => {
+      expect(el).to.be.great;
+    });
+  }
+
+  given('attribute foo="bar"' () => {
     beforeEach(() => {
       el = fixture('<my-component foo="bar"><my-component');
     });
-    it('is cool', () => {
-      expect(el).to.be.cool;
-    });
-    describe('When: attribute foo is set to a new string', () => {
+
+    then.elIsCoolAndGreat();
+
+    when('attribute foo is set to a new string', () => {
       beforeEach(() => {
         el.setAttribute('foo', 'baz');
       });
-      it(`is great`, () => {
-        expect(el).to.be.great;
-      });
+
+      then.elIsCoolAndGreat();
     });
     describe('When: attribute foo is set to an empty string', () => {
       // etc...
@@ -401,11 +416,11 @@ describe('<my-component>', () => {
 });
 ```
 
-With this approach, it is easier to see that you often need to test the same behavior more than once for the same component. In other words, in another series of 'Given' and 'When'.
+With this approach, it is easier to see that you often need to test the same behavior more than once for the same component. In other words, in another series of 'Given' and 'When'. This is where this method is handy, and why I use it very often.
 
-This is where this method is handy, and why I use it very often.
+Yet, remember that repeating yourself could also be OK! You could also write your own Chai extension. It only depends on your preferences and what you're testing.
 
-Now, it's time to summarize all this. Let's begin by defining some "Best Practices".
+Now, it's time to summarize all this. Let's define some opinionated "Best Practices".
 
 ## Best Practices
 
