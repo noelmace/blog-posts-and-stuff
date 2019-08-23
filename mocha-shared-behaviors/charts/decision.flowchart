@@ -4,11 +4,10 @@ You'll need those?
 drop=>end: drop it
 reuse=>condition: in different
 test suites/files
-closure=>end: closure
+closure=>end: closure only
 Just use the power of closures:>https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/closure[blank]
-output=>condition: in the same
-order w/ the same
-descriptions
+output=>condition: is this behavior
+completely isolated?
 sure=>condition: are you sure?
 one=>end: one-by-one
 define a lambda for each test:>https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/one-by-one[blank]
