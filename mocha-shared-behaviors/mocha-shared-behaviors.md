@@ -18,13 +18,28 @@ I see two reasons for this:
 
 So, have a nice cup of tea, relax, and let's have a look at some ways to do it right...
 
-## tl;dr
+## tl;dr <a name="tldr"></a>
 
 Check out the examples and the decision flowchart in the associated project on Github:
 
 {% github noelmace/mocha-shared-behaviors %}
 
-## The (old) Mocha way
+## What we are going to talk about here
+
+* [the recommendations from Mocha](#mocha-way)
+* [the KISS Principle](#kiss)
+* [what's the issue when using arrow functions with Mocha](#mocha-arrow)
+* the alternative approaches
+  1. [all-in-one](#all-in-one)
+  2. [one-by-one](#one-by-one)
+  3. [closures-only](#closures-only)
+* summary
+  * [requirements, pros & cons](#pro-cons)
+  * ["guidelines"](#guidelines)
+
+## The (old) Mocha way <a name="mocha-way"></a>
+
+> complete example on Github :arrow_right: [test/mocha-way](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/mocha-way)
 
 First things first! Let's see what the Mocha [documentation](https://github.com/mochajs/mocha/wiki/Shared-Behaviours)
 itself says about this.
@@ -122,7 +137,7 @@ describe('Admin', function() {
 });
 ```
 
-### What's wrong with this approach
+### What's wrong with this approach <a name="wrong-this"></a>
 
 This wiki page [hasn't been (significantly) edited](https://github.com/mochajs/mocha/wiki/Shared-Behaviours/_history) since January 2012! Way before ES2015!
 
@@ -142,7 +157,7 @@ interface](https://github.com/mochajs/mocha/pull/3399) in May 2018 (there are re
 article for more information on this). Yet, this PR is still open, and we can't, I think, expect any advancement on this
 soon.
 
-## Keep it simple, stupid! (KISS)
+## Keep it simple, stupid! (KISS) <a name="kiss"></a>
 
 To reiterate: **over-engineering is one of the main dangers when defining shared behaviors in your tests**!
 
@@ -176,7 +191,9 @@ _Same thing for shared behaviors in general!_
 
 Let's deconstruct the previous example, and minimize its complexity step-by-step.
 
-## integrated setup or tear down
+## using arrow functions with Mocha <a name="mocha-arrow"></a>
+
+> complete example on Github :arrow_right: [test/mocha-way-arrow](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/mocha-way-arrow)
 
 Back to the ["functional"
 interface](https://github.com/mochajs/mocha/pull/3399) PR. Why would we need a "functional" interface in Mocha in the first place?
@@ -215,7 +232,11 @@ TypeError: Cannot read property 'name' of undefined
 This is because Mocha identifies and "records" your test suite first, and _then_ runs your callbacks. So here, it runs
 `beforeEach` and `shouldBehaveLikeAUser` (`user` being undefined at this point) and only _then_ `beforeEach.fn` and `it.fn`.
 
-## "All-in-one"
+<a name="alternatives"></a>
+
+## "All-in-one" <a name="all-in-one"></a>
+
+> complete example on Github :arrow_right: [test/all-in-one](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/all-in-one)
 
 One solution is to move the `beforeEach` in `shouldBehaveLikeAUser`.
 
@@ -269,7 +290,9 @@ This last point could be seen as an important issue. Yet, I believe it's actuall
 It's obvious that this helper isn't really useful if you need the same setup before or after using it.
 You should use it if and only if you're actually testing a complex, self sufficient behavior.
 
-## "one-by-one"
+## "one-by-one" <a name="one-by-one"></a>
+
+> complete example on Github :arrow_right: [test/one-by-one](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/one-by-one)
 
 If you need to share setups, it could mean that your behavior isn't well defined or identified.
 Or maybe you shouldn't deal with this level of complexity (_YAGNI_, remember?).
@@ -315,7 +338,9 @@ This approach is often my preference. It's simple, explicit **and** permits defi
 
 Yet, I only use it if separate files is an absolute requirement.
 
-### The power of closures
+## The power of closures <a name="closures-only"></a>
+
+> complete example on Github :arrow_right: [test/closure](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/closure)
 
 If it isn't, simply use the lambda closure to share data between your shared behaviors.
 
@@ -412,9 +437,11 @@ Yet, remember that repeating yourself could also be OK! You could also write you
 
 Now, it's time to summarize all this.
 
-## Requirements, Pros & Cons
+<a name="summary"></a>
 
-|    | Mocha `this` | all-in-one | one-by-one | closures only |
+## Requirements, Pros & Cons <a name="pro-cons"></a>
+
+|    | [Mocha `this`](#mocha-way) | [all-in-one](#all-in-one) | [one-by-one](#one-by-one) | [closures only](#closure) |
 | -- | -------------| ---------- | ---------- | ------------- |
 | :thumbsup: KISS :kiss: | :x: | :x: | :heavy_check_mark: | :white_check_mark: |
 | :thumbsup: No side effects or closure | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: |
@@ -424,7 +451,7 @@ Now, it's time to summarize all this.
 
 > :white_check_mark: = most of the time
 
-## Guidelines
+## Guidelines <a name="guidelines"></a>
 
 :heavy_check_mark: **DO** Use arrow functions by default. It makes it clear that the Mocha contexts shouldn't be used in your project (probably most of the time!)
 
@@ -442,7 +469,7 @@ Now, it's time to summarize all this.
 
 :heavy_check_mark: **DO** keep a variable declaration close to it's initialization (& use)
 
-### one-by-one
+### "one-by-one" <a name="guidelines-one-by-one"></a>
 
 :grey_question: ***IF you don't need to define a whole set of tests in the same order with the same description.***
 
@@ -450,13 +477,13 @@ Now, it's time to summarize all this.
 
 :x: **DON'T** use a higher-order function to join these lambdas if there are less than 2 or 3 tests for a same "scope."
 
-### all-in-one
+### "all-in-one" <a name="guidelines-all-in-one"></a>
 
 :grey_question: ***IF your pre- and post- conditions are always the same for this behavior***
 
 :heavy_check_mark: **DO** define your shared behaviors with the 'before', 'beforeEach', 'after' and 'afterEach' in one big lambda function
 
-### how to choose
+### how to choose <a name="guidelines-flowchart"></a>
 
 Last but not least, here is a flowchart to help you make the right decision every time:
 
