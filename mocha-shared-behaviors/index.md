@@ -385,61 +385,19 @@ describe('Admin', () => {
 });
 ```
 
-#### my 2 cents about this method
+This is the lower level of unit testing you could get!
+It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometime a lot).
+And guess what: both are OK!
 
-Most of the time, I write my tests in a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) style. This is more a way to think about _how_ you test than a way to write tests! Here is an example to clarify.
+So, here are all the best ways you should write shared behaviors with Mocha! Now, you know what to do if you need any of those :slightly_smiling_face:
 
-> **FYI** Here, I only "replaced" `it` and `context` by `then.it`, `given` & `when` in order to make it more simple to understand.
-> ```javascript
-> const given = when = context;
-> const then = { it };
-> ```
-> I DO NOT advise you to do this in your project!
+But remember: ask yourself how you should **design** your tests, before asking how you should **write** them!
 
-```javascript
-context('<my-component>', () => {
-  const el;
+> When following a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) approach (which I often do) for example, using closures like above is very handy. But you could also write your own Chai extension... Or a whole new testing library, who knows? But this topics are for another time. Maybe some blog posts I could write sometime soon. So, stay tune :wink:!
 
-  then.elShouldBeCoolAndGreat = () => {
-    then.it('is cool', () => {
-      expect(el).to.be.cool;
-    });
+## Summary <a name="summary"></a>
 
-    then.it(`is great`, () => {
-      expect(el).to.be.great;
-    });
-  }
-
-  given('attribute foo="bar"' () => {
-    beforeEach(() => {
-      el = fixture('<my-component foo="bar"><my-component');
-    });
-
-    then.elShouldBeCoolAndGreat();
-
-    when('attribute foo is set to a new string', () => {
-      beforeEach(() => {
-        el.setAttribute('foo', 'baz');
-      });
-
-      then.elShouldBeCoolAndGreat();
-    });
-    describe('When: attribute foo is set to an empty string', () => {
-      // etc...
-    });
-  });
-});
-```
-
-With this approach, it is easier to see that you often need to test the same behavior more than once for the same component. In other words, in another series of 'Given' and 'When'. This is where this method is handy, and why I use it very often.
-
-Yet, remember that repeating yourself could also be OK! You could also write your own Chai extension. It depends on your preferences and what you're testing.
-
-Now, it's time to summarize all this.
-
-<a name="summary"></a>
-
-## Requirements, Pros & Cons <a name="pro-cons"></a>
+### Requirements, Pros & Cons <a name="pro-cons"></a>
 
 |    | [Mocha `this`](#mocha-way) | [all-in-one](#all-in-one) | [one-by-one](#one-by-one) | [closures only](#closure) |
 | -- | -------------| ---------- | ---------- | ------------- |
@@ -451,7 +409,7 @@ Now, it's time to summarize all this.
 
 > :white_check_mark: = most of the time
 
-## Guidelines <a name="guidelines"></a>
+### Guidelines <a name="guidelines"></a>
 
 :heavy_check_mark: **DO** Use arrow functions by default. This makes it clear that the Mocha contexts shouldn't be used in your project (probably most of the time!)
 
@@ -461,7 +419,7 @@ Now, it's time to summarize all this.
 
 :x: **DON'T** use the Mocha "contexts" if at least one of the following :grey_question:**IF** is met
 
-### shared behaviors in one file
+#### shared behaviors in one file
 
 :grey_question: ***IF you don't need to use a shared behavior in another file straight away***
 
@@ -469,7 +427,7 @@ Now, it's time to summarize all this.
 
 :heavy_check_mark: **DO** keep a variable declaration close to it's initialization (& use)
 
-### "one-by-one" <a name="guidelines-one-by-one"></a>
+#### "one-by-one" <a name="guidelines-one-by-one"></a>
 
 :grey_question: ***IF you don't need to define a whole set of tests in the same order with the same description.***
 
@@ -477,7 +435,7 @@ Now, it's time to summarize all this.
 
 :x: **DON'T** use a higher-order function to join these lambdas if there are less than 2 or 3 tests for a same "scope."
 
-### "all-in-one" <a name="guidelines-all-in-one"></a>
+#### "all-in-one" <a name="guidelines-all-in-one"></a>
 
 :grey_question: ***IF your pre- and post- conditions are always the same for this behavior***
 
