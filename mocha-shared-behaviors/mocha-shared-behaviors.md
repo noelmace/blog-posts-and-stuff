@@ -142,11 +142,13 @@ interface](https://github.com/mochajs/mocha/pull/3399) in May 2018 (there are re
 article for more information on this). Yet, this PR is still open, and we can't, I think, expect any advancement on this
 soon.
 
-## Keep it simple, stupid!
+## Keep it simple, stupid! (KISS)
 
 To reiterate: **over-engineering is one of the main dangers when defining shared behaviors in your tests**!
 
-I believe the KISS principle is the top principle to keep in mind when you write tests. (Think "YAGNI.") 
+I believe the [KISS principle](https://en.wikipedia.org/wiki/KISS_principle#In_software_development) is the top principle to keep in mind when you write tests.
+Think [YAGNI](https://martinfowler.com/bliki/Yagni.html) (short for "You Ain't Gonna Need It")! Do not add a functionality before it's **necessary**! In most cases, [_Worse is better_](http://dreamsongs.com/WorseIsBetter.html)!
+
 KISS is at the core of all good engineering. But when it comes to testing, it's its FUSION REACTOR CORE :bomb: !
 If you forget this, it's the apocalypse of your project! Guaranteed!
 
