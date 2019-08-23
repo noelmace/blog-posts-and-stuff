@@ -277,14 +277,14 @@ One way to solve the issues the previous method raise is by defining the shared 
 
 ```javascript
 export const expectUserLike = user => ({
-  toHaveNameFirstAs: mock => {
-    expect(user.name.first).to.equal(mock);
+  toHaveNameFirstAs: expectation => {
+    expect(user.name.first).to.equal(expectation);
   },
-  toHaveNameLastAs: mock => {
-    expect(user.name.last).to.equal(mock);
+  toHaveNameLastAs: expectation => {
+    expect(user.name.last).to.equal(expectation);
   },
-  toHaveFullnameThatReturnAs: (...mock) => {
-    expect(user.fullname()).to.equal(mock.join(' '));
+  toHaveFullnameThatReturnAs: expectation => {
+    expect(user.fullname()).to.equal(expectation);
   }
 });
 ```
