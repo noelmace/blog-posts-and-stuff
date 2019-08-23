@@ -445,8 +445,8 @@ But remember: ask yourself how you should **design** your tests, before asking h
 
 Last but not least, here is a flowchart to help you make the right decision every time:
 
-![flowchart](./charts/decision.flowchart.svg)
+![flowchart](https://raw.githubusercontent.com/noelmace/mocha-shared-behaviors/master/decision.flowchart.png)
 
 > **Do you have other ideas for defining good shared behaviors? Any feedback or questions about the one I have shown here?**
 >
-> **Leave a comment below, tweet at me (@noel_mace #WebOnFIRE), or open an issue for the associated [project](noelmace/mocha-shared-behaviors) on Github**
+> **Leave a comment below, tweet at [me @noel_mace](https://twitter.com/noel_mace), or open an issue for the associated [project](noelmace/mocha-shared-behaviors) on Github**
