@@ -257,9 +257,7 @@ Here, nothing is "hidden." Just by looking at the signature, we understand that 
 
 And it's self-sufficient. No side effects or closure requirements here.
 
-**But**, it has its own logic. For example, if you add the first argument to the `Admin` constructor, it fails, because you introduced a bug in the shared behavior, and there is a chance you won't see it directly because you didn't define a spec for that.
-
-And it's completely isolated! You can't reuse `userLike`, and have to repeat yourself.
+More important, it's completely isolated! You can't reuse `userLike`! You would have to repeat yourself, like this:
 
 ```javascript
 it('should be an .admin', () => {
@@ -267,15 +265,19 @@ it('should be an .admin', () => {
 });
 ```
 
-**Conclusion**
-
-You should use this solution if, and only if, you absolutely need specific setup or tear down which are completely isolated from the other behaviors, and if the required parameters aren't too complex.
+This last point could be seen as an important issue. Yet, I believe it's actually an important advantage!
+It's obvious that this helper isn't really useful if you need the same setup before or after using it.
+You should use it if and only if you're actually testing a complex, self sufficient behavior.
 
 ## "one-by-one"
 
-One way to solve the issues the previous method raise is by defining the shared behaviors one by one, spec by spec, like this:
+If you need to share setups, it could mean that your behavior isn't well defined or identified.
+Or maybe you shouldn't deal with this level of complexity (_YAGNI_, remember?).
+
+Defining the behavior spec by spec, like in the following example, is often simpler.
 
 ```javascript
+/// helpers.js
 export const expectUserLike = user => ({
   toHaveNameFirstAs: expectation => {
     expect(user.name.first).to.equal(expectation);
@@ -287,11 +289,7 @@ export const expectUserLike = user => ({
     expect(user.fullname()).to.equal(expectation);
   }
 });
-```
 
-And to use them as shown here:
-
-```javascript
 /// user.test.js
 let user = 'foo';
 const constructorArgs = ['tobi', 'holowaychuk'];
@@ -312,8 +310,6 @@ describe('User', () => {
 Now, this shared behavior isn't isolated anymore. And it's simple :kiss:!
 
 Not being able to require that every aspect of the behavior is tested, to define any order, nor spec description, setup and tear down could be an important downside for some use cases. Yet, in my opinion, this isn't really needed as often as you may think.
-
-**Conclusion**
 
 This approach is often my preference. It's simple, explicit **and** permits definition of shared behaviors in separate files.
 
