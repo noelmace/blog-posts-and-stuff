@@ -286,7 +286,7 @@ it('should be an .admin', () => {
 });
 ```
 
-This last point could be seen as an important issue. Yet, I believe it's actually an important advantage!
+This last point could be seen as an issue. Yet, I believe it's actually an advantage!
 It's obvious that this helper isn't really useful if you need the same setup before or after using it.
 You should use it if and only if you're actually testing a complex, self sufficient behavior.
 
@@ -295,7 +295,7 @@ You should use it if and only if you're actually testing a complex, self suffici
 > complete example on Github :arrow_right: [test/one-by-one](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/one-by-one)
 
 If you need to share setups, it could mean that your behavior isn't well defined or identified.
-Or maybe you shouldn't deal with this level of complexity (_YAGNI_, remember?).
+Or maybe you shouldn't be working with this level of complexity (_YAGNI_, remember?).
 
 Defining the behavior spec by spec, like in the following example, is often simpler.
 
@@ -332,7 +332,7 @@ describe('User', () => {
 
 Now, this shared behavior isn't isolated anymore. And it's simple :kiss:!
 
-Not being able to require that every aspect of the behavior is tested, to define any order, nor spec description, setup and tear down could be an important downside for some use cases. Yet, in my opinion, this isn't really needed as often as you may think.
+Not being able test every aspect of the behavior, or define an order, spec description, setup and tear down, could be an important downside for some use cases. Yet, in my opinion, this isn't really needed as often as you may think.
 
 This approach is often my preference. It's simple, explicit **and** permits definition of shared behaviors in separate files.
 
@@ -387,7 +387,7 @@ describe('Admin', () => {
 
 #### my 2 cents about this method
 
-Most of the time, I write my tests in a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) style. This is more a way to think you test than a way to write them! Here is an example to help you better understand what I'm talking about anyway.
+Most of the time, I write my tests in a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) style. This is more a way to think about _how_ you test than a way to write tests! Here is an example to clarify.
 
 > **FYI** Here, I only "replaced" `it` and `context` by `then.it`, `given` & `when` in order to make it more simple to understand.
 > ```javascript
@@ -433,7 +433,7 @@ context('<my-component>', () => {
 
 With this approach, it is easier to see that you often need to test the same behavior more than once for the same component. In other words, in another series of 'Given' and 'When'. This is where this method is handy, and why I use it very often.
 
-Yet, remember that repeating yourself could also be OK! You could also write your own Chai extension. It only depends on your preferences and what you're testing.
+Yet, remember that repeating yourself could also be OK! You could also write your own Chai extension. It depends on your preferences and what you're testing.
 
 Now, it's time to summarize all this.
 
@@ -453,7 +453,7 @@ Now, it's time to summarize all this.
 
 ## Guidelines <a name="guidelines"></a>
 
-:heavy_check_mark: **DO** Use arrow functions by default. It makes it clear that the Mocha contexts shouldn't be used in your project (probably most of the time!)
+:heavy_check_mark: **DO** Use arrow functions by default. This makes it clear that the Mocha contexts shouldn't be used in your project (probably most of the time!)
 
 :heavy_check_mark: **DO** Check if YAGNI before anything, every time!
 
@@ -481,7 +481,7 @@ Now, it's time to summarize all this.
 
 :grey_question: ***IF your pre- and post- conditions are always the same for this behavior***
 
-:heavy_check_mark: **DO** define your shared behaviors with the 'before', 'beforeEach', 'after' and 'afterEach' in one big lambda function
+:heavy_check_mark: **DO** define your shared behaviors with the 'before', 'beforeEach', 'after' and 'afterEach' in one big lambda function.
 
 ### how to choose <a name="guidelines-flowchart"></a>
 
