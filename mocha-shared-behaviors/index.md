@@ -8,8 +8,7 @@ tags: testing, mocha, open-wc, web components
 Like many of you, I love unit testing! Because good coverage on a codebase makes me confident.
 Tests help me understand what a code is about. Above all, they make me feel less frustrated when I debug :wink:
 
-But here is something that can make any developer frustrated when they write or read tests: **sharing
-behaviors**.
+But here is something that can frustrate any developer when they write or read tests: **sharing behaviors**.
 
 I see two reasons for this:
 
@@ -24,16 +23,16 @@ Check out the examples and the decision flowchart in the associated project on G
 
 {% github noelmace/mocha-shared-behaviors %}
 
-## What we are going to talk about here
+## What I am going to talk about here
 
-* [the recommendations from Mocha](#mocha-way)
-* [the KISS Principle](#kiss)
-* [what's the issue when using arrow functions with Mocha](#mocha-arrow)
-* the alternative approaches
+* [Recommendations from Mocha](#mocha-way)
+* [The KISS Principle](#kiss)
+* [Issues when using arrow functions with Mocha](#mocha-arrow)
+* Alternative approaches
   1. [all-in-one](#all-in-one)
   2. [one-by-one](#one-by-one)
   3. [closures-only](#closures-only)
-* summary
+* Summary
   * [requirements, pros & cons](#pro-cons)
   * ["guidelines"](#guidelines)
 
@@ -159,9 +158,9 @@ soon.
 
 ## Keep it simple, stupid! (KISS) <a name="kiss"></a>
 
-To reiterate: **over-engineering is one of the main dangers when defining shared behaviors in your tests**!
+In short: **over-engineering is one of the main dangers when defining shared behaviors in your tests**!
 
-I believe the [KISS principle](https://en.wikipedia.org/wiki/KISS_principle#In_software_development) is the top principle to keep in mind when you write tests.
+I believe the [KISS principle](https://en.wikipedia.org/wiki/KISS_principle#In_software_development) is the key principle to keep in mind when you write tests.
 Think [YAGNI](https://martinfowler.com/bliki/Yagni.html) (short for "You Ain't Gonna Need It")! Do not add a functionality before it's **necessary**! In most cases, [_Worse is better_](http://dreamsongs.com/WorseIsBetter.html)!
 
 KISS is at the core of all good engineering. But when it comes to testing, it's its FUSION REACTOR CORE :bomb:!
@@ -385,15 +384,15 @@ describe('Admin', () => {
 });
 ```
 
-This is the lower level of unit testing you could get!
+This is the lowest level of unit testing you can get.
 It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometimes a lot).
-And guess what: both are OK!
+And guess what: both are OK.
 
-So, here are all the best ways you should write shared behaviors with Mocha! Now, you know what to do if you need any of those :slightly_smiling_face:
+So, here are all the best ways you should write shared behaviors with Mocha. And now you know what to do if you need any of them. :slightly_smiling_face:
 
-But remember: ask yourself how you should **design** your tests, before asking how you should **write** them!
+But remember: ask yourself how you should **design** your tests, before asking how you should **write** them.
 
-> When following a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) approach (which I often do) for example, using closures like above is very handy. But you could also write your own Chai extension... Or a whole new testing library, who knows? But these topics are for another time. Maybe some blog posts I could write sometime soon. So, stay tune :wink:!
+> When following a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) approach (which I often do) for example, using closures as I have done above is very handy. But you could also write your own Chai extension... Or a whole new testing library. But these are topics are for another time. Maybe some blog posts I should write sometime soon. Stay tuned :wink:!
 
 ## Summary <a name="summary"></a>
 
