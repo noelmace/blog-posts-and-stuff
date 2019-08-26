@@ -164,7 +164,7 @@ To reiterate: **over-engineering is one of the main dangers when defining shared
 I believe the [KISS principle](https://en.wikipedia.org/wiki/KISS_principle#In_software_development) is the top principle to keep in mind when you write tests.
 Think [YAGNI](https://martinfowler.com/bliki/Yagni.html) (short for "You Ain't Gonna Need It")! Do not add a functionality before it's **necessary**! In most cases, [_Worse is better_](http://dreamsongs.com/WorseIsBetter.html)!
 
-KISS is at the core of all good engineering. But when it comes to testing, it's its FUSION REACTOR CORE :bomb: !
+KISS is at the core of all good engineering. But when it comes to testing, it's its FUSION REACTOR CORE :bomb:!
 If you forget this, it's the apocalypse of your project! Guaranteed!
 
 If still have doubts, here is an argument from authority :wink: :
@@ -288,7 +288,7 @@ it('should be an .admin', () => {
 
 This last point could be seen as an issue. Yet, I believe it's actually an advantage!
 It's obvious that this helper isn't really useful if you need the same setup before or after using it.
-You should use it if and only if you're actually testing a complex, self sufficient behavior.
+You should use it if and only if you're actually testing a complex, self-sufficient behavior.
 
 ## "one-by-one" <a name="one-by-one"></a>
 
@@ -332,7 +332,7 @@ describe('User', () => {
 
 Now, this shared behavior isn't isolated anymore. And it's simple :kiss:!
 
-Not being able test every aspect of the behavior, or define an order, spec description, setup and tear down, could be an important downside for some use cases. Yet, in my opinion, this isn't really needed as often as you may think.
+Not being able to test every aspect of the behavior, or define an order, spec description, setup and tear down, could be an important downside for some use cases. Yet, in my opinion, this isn't really needed as often as you may think.
 
 This approach is often my preference. It's simple, explicit **and** permits definition of shared behaviors in separate files.
 
@@ -386,14 +386,14 @@ describe('Admin', () => {
 ```
 
 This is the lower level of unit testing you could get!
-It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometime a lot).
+It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometimes a lot).
 And guess what: both are OK!
 
 So, here are all the best ways you should write shared behaviors with Mocha! Now, you know what to do if you need any of those :slightly_smiling_face:
 
 But remember: ask yourself how you should **design** your tests, before asking how you should **write** them!
 
-> When following a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) approach (which I often do) for example, using closures like above is very handy. But you could also write your own Chai extension... Or a whole new testing library, who knows? But this topics are for another time. Maybe some blog posts I could write sometime soon. So, stay tune :wink:!
+> When following a [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) approach (which I often do) for example, using closures like above is very handy. But you could also write your own Chai extension... Or a whole new testing library, who knows? But these topics are for another time. Maybe some blog posts I could write sometime soon. So, stay tune :wink:!
 
 ## Summary <a name="summary"></a>
 
@@ -433,7 +433,7 @@ But remember: ask yourself how you should **design** your tests, before asking h
 
 :heavy_check_mark: **DO** define one lambda for each test in another file
 
-:x: **DON'T** use a higher-order function to join these lambdas if there are less than 2 or 3 tests for a same "scope."
+:x: **DON'T** use a higher-order function to join these lambdas if there are less than 2 or 3 tests for the same "scope."
 
 #### "all-in-one" <a name="guidelines-all-in-one"></a>
 
