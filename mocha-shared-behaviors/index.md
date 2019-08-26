@@ -362,7 +362,7 @@ describe('Admin', () => {
 });
 ```
 
-This is the lowest level of unit testing you can get. It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometimes a lot). And guess what: both are OK.
+This is the lowest level of shared behavior you can get. It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometimes a lot). And guess what: both are OK.
 
 So, here are all the best ways you should write shared behaviors with Mocha. And now you know what to do if you need any of them. :slightly_smiling_face:
 
