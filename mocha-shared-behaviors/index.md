@@ -5,8 +5,7 @@ description:
 tags: testing, mocha, open-wc, web components
 ---
 
-Like many of you, I love unit testing! Because good coverage on a codebase makes me confident.
-Tests help me understand what a code is about. Above all, they make me feel less frustrated when I debug :wink:
+Like many of you, I love unit testing! Because good coverage on a codebase makes me confident. Tests help me understand what a code is about. Above all, they make me feel less frustrated when I debug :wink:
 
 But here is something that can frustrate any developer when they write or read tests: **sharing behaviors**.
 
@@ -43,9 +42,7 @@ Check out the examples and the decision flowchart in the associated project on G
 First things first! Let's see what the Mocha [documentation](https://github.com/mochajs/mocha/wiki/Shared-Behaviours)
 itself says about this.
 
-Mocha binds its context (the Mocha "contexts", aka the "this" keyword) to every callback you give to it. Meaning, in the
-function you give to `describe`, `before`, `beforeEach`, `it`, `after` & `afterEach`, you can assign to `this` any data
-or function you want, making it available for all the callbacks to be called in the same `describe`.
+Mocha binds its context (the Mocha "contexts", aka the "this" keyword) to every callback you give to it. Meaning, in the function you give to `describe`, `before`, `beforeEach`, `it`, `after` & `afterEach`, you can assign to `this` any data or function you want, making it available for all the callbacks to be called in the same `describe`.
 
 To illustrate how to use this to write shared behaviors, Mocha gives the following example.
 
@@ -78,8 +75,7 @@ export function Admin(first, last) {
 Admin.prototype.__proto__ = User.prototype;
 ```
 
-`Admin` obviously shares some behaviors with `User`. So, we can write these shared behaviors in a function using 
-"contexts":
+`Admin` obviously shares some behaviors with `User`. So, we can write these shared behaviors in a function using "contexts":
 
 ```javascript
 /// helpers.js
@@ -140,36 +136,25 @@ describe('Admin', function() {
 
 This wiki page [hasn't been (significantly) edited](https://github.com/mochajs/mocha/wiki/Shared-Behaviours/_history) since January 2012! Way before ES2015!
 
-This is why Mocha decided to [discourage using arrow
-functions](https://github.com/mochajs/mocha/commit/2a91194f74ba09a4cf345b6accce2abac91b473a) in 2015 ... and no update
-to this section of the documentation has been done since.
+This is why Mocha decided to [discourage using arrow functions](https://github.com/mochajs/mocha/commit/2a91194f74ba09a4cf345b6accce2abac91b473a) in 2015 ... and no update to this section of the documentation has been done since.
 
 It's pretty old. There is also no documentation about field ownership, so you're exposed to future conflicts any time you use the Mocha "contexts".
 
-Yet, those aren't the main issues with this approach. Using it, there is no way to clearly identify the requirements of your shared
-behavior. In other words, you can't see the required data types and signature in its declaration context (i.e. closure)
-or in the function signature (i.e. arguments). This isn't the best choice for readability and maintainability.
+Yet, those aren't the main issues with this approach. Using it, there is no way to clearly identify the requirements of your shared behavior. In other words, you can't see the required data types and signature in its declaration context (i.e. closure) or in the function signature (i.e. arguments). This isn't the best choice for readability and maintainability.
 
-There are some ongoing discussions about this approach. Especially noteworthy: Christopher Hiller (aka Boneskull),
-maintainer of Mocha since July 2014, published a first attempt of a ["functional"
-interface](https://github.com/mochajs/mocha/pull/3399) in May 2018 (there are references at the end of this
-article for more information on this). Yet, this PR is still open, and we can't, I think, expect any advancement on this
-soon.
+There are some ongoing discussions about this approach. Especially noteworthy: Christopher Hiller (aka Boneskull), maintainer of Mocha since July 2014, published a first attempt of a ["functional" interface](https://github.com/mochajs/mocha/pull/3399) in May 2018 (there are references at the end of this article for more information on this). Yet, this PR is still open, and we can't, I think, expect any advancement on this soon.
 
 ## Keep it simple, stupid! (KISS) <a name="kiss"></a>
 
 In short: **over-engineering is one of the main dangers when defining shared behaviors in your tests**!
 
-I believe the [KISS principle](https://en.wikipedia.org/wiki/KISS_principle#In_software_development) is the key principle to keep in mind when you write tests.
-Think [YAGNI](https://martinfowler.com/bliki/Yagni.html) (short for "You Ain't Gonna Need It")! Do not add a functionality before it's **necessary**! In most cases, [_Worse is better_](http://dreamsongs.com/WorseIsBetter.html)!
+I believe the [KISS principle](https://en.wikipedia.org/wiki/KISS_principle#In_software_development) is the key principle to keep in mind when you write tests. Think [YAGNI](https://martinfowler.com/bliki/Yagni.html) (short for "You Ain't Gonna Need It")! Do not add a functionality before it's **necessary**! In most cases, [_Worse is better_](http://dreamsongs.com/WorseIsBetter.html)!
 
-KISS is at the core of all good engineering. But when it comes to testing, it's its FUSION REACTOR CORE :bomb:!
-If you forget this, it's the apocalypse of your project! Guaranteed!
+KISS is at the core of all good engineering. But when it comes to testing, it's its FUSION REACTOR CORE :bomb:! If you forget this, it's the apocalypse of your project! Guaranteed!
 
 If still have doubts, here is an argument from authority :wink: :
 
-Jasmine permits handling shared behaviors pretty much the same way Mocha does (i.e. using the "this" keyword). Concerned
-about this same issue, the contributors added the following "Caveats" chapter to the related documentation page.
+Jasmine permits handling shared behaviors pretty much the same way Mocha does (i.e. using the "this" keyword). Concerned about this same issue, the contributors added the following "Caveats" chapter to the related documentation page.
 
 > Sharing behaviors in tests can be a powerful tool, but use them with caution.
 >
@@ -182,8 +167,7 @@ about this same issue, the contributors added the following "Caveats" chapter to
 >   requirements change, a function may no longer "fit the mold" like other functions, forcing the developer to do more
 >   refactoring than if you had just listed out your tests separately.
 
-So writing shared behaviors using the "`this` keyword" does work. And it can be pretty useful from time to time.
-But it can also bring a lot of unneeded complexity to your tests.
+So writing shared behaviors using the "`this` keyword" does work. And it can be pretty useful from time to time. But it can also bring a lot of unneeded complexity to your tests.
 
 **Avoid using the Mocha context as much as you can!**
 _Same thing for shared behaviors in general!_
@@ -194,11 +178,9 @@ Let's deconstruct the previous example, and minimize its complexity step-by-step
 
 > complete example on Github :arrow_right: [test/mocha-way-arrow](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/mocha-way-arrow)
 
-Back to the ["functional"
-interface](https://github.com/mochajs/mocha/pull/3399) PR. Why would we need a "functional" interface in Mocha in the first place?
+Back to the ["functional" interface](https://github.com/mochajs/mocha/pull/3399) PR. Why would we need a "functional" interface in Mocha in the first place?
 
-Let's try to rewrite the previous example using an arrow function. Of course, a lambda doesn't have a "this", so here
-I'll use its closure.
+Let's try to rewrite the previous example using an arrow function. Of course, a lambda doesn't have a "this", so here I'll use its closure.
 
 ```javascript
 /// helpers.js
@@ -228,8 +210,7 @@ TypeError: Cannot read property 'name' of undefined
   at Context.name (test/helpers.js:5:17)
 ```
 
-This is because Mocha identifies and "records" your test suite first, and _then_ runs your callbacks. So here, it runs
-`beforeEach` and `shouldBehaveLikeAUser` (`user` being undefined at this point) and only _then_ `beforeEach.fn` and `it.fn`.
+This is because Mocha identifies and "records" your test suite first, and _then_ runs your callbacks. So here, it runs `beforeEach` and `shouldBehaveLikeAUser` (`user` being undefined at this point) and only _then_ `beforeEach.fn` and `it.fn`.
 
 <a name="alternatives"></a>
 
@@ -285,16 +266,13 @@ it('should be an .admin', () => {
 });
 ```
 
-This last point could be seen as an issue. Yet, I believe it's actually an advantage!
-It's obvious that this helper isn't really useful if you need the same setup before or after using it.
-You should use it if and only if you're actually testing a complex, self-sufficient behavior.
+This last point could be seen as an issue. Yet, I believe it's actually an advantage! It's obvious that this helper isn't really useful if you need the same setup before or after using it. You should use it if and only if you're actually testing a complex, self-sufficient behavior.
 
 ## "one-by-one" <a name="one-by-one"></a>
 
 > complete example on Github :arrow_right: [test/one-by-one](https://github.com/noelmace/mocha-shared-behaviors/tree/master/test/one-by-one)
 
-If you need to share setups, it could mean that your behavior isn't well defined or identified.
-Or maybe you shouldn't be working with this level of complexity (_YAGNI_, remember?).
+If you need to share setups, it could mean that your behavior isn't well defined or identified. Or maybe you shouldn't be working with this level of complexity (_YAGNI_, remember?).
 
 Defining the behavior spec by spec, like in the following example, is often simpler.
 
@@ -384,9 +362,7 @@ describe('Admin', () => {
 });
 ```
 
-This is the lowest level of unit testing you can get.
-It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometimes a lot).
-And guess what: both are OK.
+This is the lowest level of unit testing you can get. It's a "give or take": either you share some behaviors this way, or you need to repeat yourself (sometimes a lot). And guess what: both are OK.
 
 So, here are all the best ways you should write shared behaviors with Mocha. And now you know what to do if you need any of them. :slightly_smiling_face:
 
