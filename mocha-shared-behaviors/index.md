@@ -1,6 +1,6 @@
 ---
 title: Shared Behaviors best practices with Mocha
-published: false
+published: true
 description:
 tags: testing, mocha, open-wc, web components
 ---
