@@ -6,7 +6,7 @@
   "scripts": {
     "diagrams": "diagrams build && convert-svg-to-png --background white ./**/*.svg",
     "diagrams:watch": "diagrams watch",
-    "medium": "mkdir $npm_config_name && echo $npm_config_from > $npm_config_name/import.txt && mediumexporter $npm_config_from > $npm_config_name/$npm_config_name.md"
+    "medium": "node medium-import.js"
   },
   "author": "Noël Macé",
   "license": "UNLICENSED",
